@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Products</title>
+<title>Cart</title>
 
 <!-- 
 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
@@ -25,7 +25,7 @@
 <body>
 
 	<div class="container">
-		<h1>Products</h1>
+		<h1>Your Cart</h1>
 		<hr>
 
 		<div class="row g-2">
@@ -35,9 +35,8 @@
 				<th:block th:text="${#session.removeAttribute('successMsg')}" />
 			</div>
 
-			<div th:each="p :${pagesProduct.content}" class="card mx-1 my-1"
-				style="width: 15rem;">
-
+			<div th:if="${cart}" th:each="p : ${cart.products}"
+				class="card mx-1 my-1" style="width: 15rem;">
 				<th:block th:if="${not #lists.isEmpty(p.productImages)}">
 					<img th:src="@{${p.path + p.productImages[0].name}}"
 						class="card-img-top" alt="...">
@@ -48,41 +47,31 @@
 					<p th:text="${p.description}" class="card-text">Product
 						description</p>
 					<a th:href="@{/products/{id}(id = ${p.id})}"
-						class="btn btn-primary">detail</a> 
-						
-					<a th:href="@{/cart/{id}(id = ${p.id})}" class="btn btn-primary">Add to cart</a>
+						class="btn btn-primary">detail</a>
 				</div>
-				<!-- for admin only -->
-				<div sec:authorize="hasRole('ROLE_ADMIN')" class="card-footer">
 
+				<!-- for handle cart -->
+				<div class="card-footer">
 
-
-					<form method="post"
-						th:action="@{/products/delete/{id}(id = ${p.id})}">
-
-						<a th:href="@{/products/update/{id}(id = ${p.id})}"
-							class="btn btn-primary">update</a> <input type="submit"
-							value="delete" class="btn btn-danger btn-sm"
-							onclick="if(!confirm('Are you sure to delete this product ?')) return false;">
+					<form method="post" th:action="@{/cart/delete/{id}(id = ${p.id})}">
+						<input type="submit" value="delete" class="btn btn-danger btn-sm"
+							onclick="if(!confirm('Are you sure to delete this product from cart ?')) return false;">
 					</form>
 				</div>
 			</div>
-		</div>
 
-		<hr>
-
-		<div th:if="${pageNumbers}">
-			<a th:if="${pagesProduct.number > 0}"
-				th:href="@{/products(page = ${pagesProduct.number})}">Previous</a> <a
-				th:each="pageNum : ${pageNumbers}" th:text="${pageNum}"
-				th:href="@{/products(page = ${pageNum})}"
-				th:class="${pageNum == pagesProduct.number + 1} ? 'active'"></a> <a
-				th:if="${pagesProduct.number < pagesProduct.totalPages - 1}"
-				th:href="@{/products(page = ${pagesProduct.number + 2})}">Next</a>
 		</div>
 		
-		<div th:if="${cart}">
-			<a th:href="@{/cart}">Go to cart</a>
+		<hr>
+		
+		<div class="mb-2">
+			<a class="btn btn-primary btn-sm" th:href="@{/products}">To products page</a>
+		</div>
+		
+		<div th:if="${not cart.products.isEmpty()}">
+			<form th:action="@{cart/clear}" method="post">
+				<input class="btn btn-danger btn-sm" type="submit" th:value="'Clear cart'">
+			</form>
 		</div>
 
 	</div>

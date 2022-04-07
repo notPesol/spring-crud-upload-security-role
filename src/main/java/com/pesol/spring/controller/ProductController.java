@@ -25,7 +25,7 @@ import com.pesol.spring.service.ProductService;
 
 @Controller
 @RequestMapping("/products")
-@SessionAttributes("successMsg")
+@SessionAttributes({"successMsg", "cart"})
 public class ProductController {
 	
 	@Autowired
