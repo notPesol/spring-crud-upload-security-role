@@ -1,0 +1,73 @@
+
+.container {
+	max-width: 1280px;
+	width: 100%;
+	margin: 0 auto 0 auto;
+}
+
+
+form {
+	max-width: 800px;
+	margin: auto;	
+}
+
+form div {
+	width: 100%;
+	margin: 0 auto 10px auto;
+}
+
+form div input:not(input[type="submit"], input[type="checkbox"]) {
+	display: block;
+	width: 90%;
+	margin: 0 auto 0 auto;
+	height: 40px;
+	font-size: 20px;
+	
+}
+
+input[type="submit"] {
+	display: block;
+	width: 200px;
+	max-width: 50%;
+	margin: 0 auto 0 auto;
+	height: 40px;
+	font-size: 20px;
+}
+
+div i, div span {
+	display: block;
+	width: 90%;
+	margin: 0 auto 0 auto;
+	font-size: 20px;
+}
+
+div a {
+	display: block;
+	width: 90%;
+	max-width: 800px;
+	margin: 0 auto 0 auto;
+	font-size: 20px;
+	text-decoration: none;
+	color: blue;
+}
+
+
+.error {
+	color: red;
+}
+
+.success {
+	color: green;
+}
+
+
+.main {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+}
+
+.detail {
+	justify-content: center;
+}
+

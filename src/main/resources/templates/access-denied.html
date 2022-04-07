@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8">
+<title>Access Denied - Page</title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+	<div class="container">
+		<h1>Access - Denied</h1>
+		<hr>
+
+		<div>
+			<a th:href="@{/login}">Login</a> <a th:href="@{/register}">Register</a>
+			<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+		</div>
+
+	</div>
+
+</body>
+</html>

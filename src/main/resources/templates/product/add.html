@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Products</title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+	<div class="container">
+		<h1>Add - Product</h1>
+		<hr>
+
+		<form th:action="@{/products/add}" th:object="${theProductModel}"
+				method="post" enctype="multipart/form-data">
+			
+			<div>
+				<input th:field="*{name}" placeholder="Product name" /> <i
+					th:if="${#fields.hasErrors('name')}" class="error"
+					th:errors="*{name}"></i>
+			</div>
+
+			<div>
+				<input th:field="*{price}" placeholder="Price" type="number" />
+				<i th:if="${#fields.hasErrors('price')}" class="error"
+					th:errors="*{price}"></i>
+			</div>
+			
+			<div>
+				<input th:field="*{quantity}" placeholder="quantity" type="number" />
+				<i th:if="${#fields.hasErrors('quantity')}" class="error"
+					th:errors="*{quantity}"></i>
+			</div>
+
+			<div>
+				<input th:field="*{description}" placeholder="Product description" type="text" />
+				<i th:if="${#fields.hasErrors('description')}" class="error"
+					th:errors="*{description}"></i>
+			</div>
+
+			<div>
+				<label>Images</label>
+				<input type="file" name="images" accept="image/*" />
+				<input type="file" name="images" accept="image/*" />
+				<input type="file" name="images" accept="image/*" />
+			</div>
+
+			<div>
+				<input type="submit" value="Submit">
+			</div>
+		</form>
+
+	</div>
+
+</body>
+</html>
