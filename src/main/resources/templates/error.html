@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Error - Page</title>
+</head>
+<body>
+	<h1 th:text="${errorMsg} ? 'Error page' : 'Page not found'">H1 Text</h1>
+	<hr>
+	<div>
+		<h1 th:text="${errorMsg}"></h1>
+		<p th:text="${reqUrl}">
+	</div>
+	<th:block th:if="${errorMsg}">
+		<hr>
+	</th:block>
+	<a th:href="@{/}">To Home page</a>
+	<a th:href="@{/products}">To Product page</a>
+</body>
+</html>

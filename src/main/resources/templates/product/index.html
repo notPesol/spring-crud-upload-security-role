@@ -48,14 +48,17 @@
 					<p th:text="${p.description}" class="card-text">Product
 						description</p>
 					<a th:href="@{/products/{id}(id = ${p.id})}"
-						class="btn btn-primary">detail</a> 
-						
-					<a th:href="@{/cart/{id}(id = ${p.id})}" class="btn btn-primary">Add to cart</a>
+						class="btn btn-primary mb-2">detail</a>
+
+					<form th:action="@{/cart/{id}(id = ${p.id})}">
+						<input class="form-control form-control-sm mb-1" 
+							value="1" name="quantity" type="number" min="1"
+							th:max="${p.quantity}"> 
+						<input class="btn btn-sm btn-secondary"type="submit" value="Add to cart">
+					</form>
 				</div>
 				<!-- for admin only -->
 				<div sec:authorize="hasRole('ROLE_ADMIN')" class="card-footer">
-
-
 
 					<form method="post"
 						th:action="@{/products/delete/{id}(id = ${p.id})}">
@@ -80,7 +83,7 @@
 				th:if="${pagesProduct.number < pagesProduct.totalPages - 1}"
 				th:href="@{/products(page = ${pagesProduct.number + 2})}">Next</a>
 		</div>
-		
+
 		<div th:if="${cart}">
 			<a th:href="@{/cart}">Go to cart</a>
 		</div>

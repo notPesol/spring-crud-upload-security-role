@@ -29,8 +29,6 @@ public class ProductModel {
 	public ProductModel() {
 	
 	}
-	
-	
 
 	public ProductModel(Integer id, String name, Double price, String description, Integer quantity,
 			List<ProductImage> productImages) {
@@ -41,8 +39,6 @@ public class ProductModel {
 		this.quantity = quantity;
 		this.productImages = productImages;
 	}
-
-
 
 	public Integer getId() {
 		return id;

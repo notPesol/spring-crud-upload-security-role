@@ -35,23 +35,33 @@
 				<th:block th:text="${#session.removeAttribute('successMsg')}" />
 			</div>
 
-			<div th:if="${cart}" th:each="p : ${cart.products}"
-				class="card mx-1 my-1" style="width: 15rem;">
-				<th:block th:if="${not #lists.isEmpty(p.productImages)}">
-					<img th:src="@{${p.path + p.productImages[0].name}}"
-						class="card-img-top" alt="...">
+			<div th:if="${not cart.isEmpty()}" th:each="entry : ${cart.products}"
+				th:with="p = ${entry.value}" class="card mx-1 my-1"
+				style="width: 15rem;">
+				<th:block th:if="${not #lists.isEmpty(p.imageUrls)}">
+					<img th:src="@{${p.path + p.imageUrls[0]}}" class="card-img-top"
+						alt="...">
 				</th:block>
 
 				<div class="card-body">
 					<h5 th:text="${p.name}" class="card-title">Product name</h5>
-					<p th:text="${p.description}" class="card-text">Product
-						description</p>
+					<p th:text="${'฿' + p.price}" class="card-text">Product price</p>
 					<a th:href="@{/products/{id}(id = ${p.id})}"
 						class="btn btn-primary">detail</a>
 				</div>
 
 				<!-- for handle cart -->
 				<div class="card-footer">
+
+					<p class="card-text" th:text="${'In cart = ' + p.quantity}"></p>
+
+					<form class="mb-2" th:action="@{/cart/{id}(id = ${p.id})}">
+						<label>Update quantity:</label> <input
+							class="form-control form-control-sm" th:value="0" name="quantity"
+							type="number"> <span>*(- for decrease)</span> <input
+							class="btn btn-sm btn-secondary mt-1" type="submit"
+							value="Update">
+					</form>
 
 					<form method="post" th:action="@{/cart/delete/{id}(id = ${p.id})}">
 						<input type="submit" value="delete" class="btn btn-danger btn-sm"
@@ -61,17 +71,32 @@
 			</div>
 
 		</div>
-		
-		<hr>
-		
-		<div class="mb-2">
-			<a class="btn btn-primary btn-sm" th:href="@{/products}">To products page</a>
+
+		<th:block th:if="${not cart.products.isEmpty()}">
+			<hr>
+		</th:block>
+
+		<div th:if="${not cart.isEmpty()}">
+			<p th:text="${'Total quantity = ' + cart.totalQuantity}">
+			<p th:text="${'Total price = ฿' + cart.totalAmount}">
 		</div>
-		
+
 		<div th:if="${not cart.products.isEmpty()}">
 			<form th:action="@{cart/clear}" method="post">
-				<input class="btn btn-danger btn-sm" type="submit" th:value="'Clear cart'">
+				<input class="btn btn-danger btn-sm" type="submit"
+					th:value="'Clear cart'"
+					onclick="if(!confirm('Are you sure to clear cart ?')) return false;">
 			</form>
+		</div>
+
+		<th:block th:if="${not cart.products.isEmpty()}">
+			<hr>
+		</th:block>
+
+
+		<div>
+			<a th:href="@{/}">To Home page</a> <a th:href="@{/products}">To
+				Product page</a>
 		</div>
 
 	</div>

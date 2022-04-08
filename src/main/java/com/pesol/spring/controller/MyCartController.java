@@ -1,21 +1,28 @@
 package com.pesol.spring.controller;
 
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.pesol.spring.entity.Product;
-import com.pesol.spring.model.CartModel;
+import com.pesol.spring.entity.ProductImage;
+import com.pesol.spring.model.MyCart;
+import com.pesol.spring.model.ProductInfo;
 import com.pesol.spring.service.ProductService;
 
 @Controller
 @SessionAttributes("cart")
-public class CartController {
+public class MyCartController {
 	
 	@Autowired
 	private ProductService productService;
@@ -23,30 +30,35 @@ public class CartController {
 	@GetMapping("/cart")
 	public String renderCart(Model model) {
 		
-		CartModel cart = (CartModel) model.getAttribute("cart");
+		MyCart cart = (MyCart) model.getAttribute("cart");
 		
 		if (cart == null) {
-			model.addAttribute("cart", new CartModel());
+			cart = new MyCart();
+			model.addAttribute("cart", cart);
 		}
 		
-		return "cart/index";
+		return "myCart/index";
 	}
 	
 	@GetMapping("/cart/{productId}")
-	public String addProductToCart(@PathVariable int productId, Model model) {
+	public String addProductToCart(@PathVariable int productId, @RequestParam Optional<Integer> quantity, Model model) {
 		
 		Product product = productService.findById(productId);
 		
 		if (product != null) {
 			
-			CartModel cart = (CartModel) model.getAttribute("cart");
+			MyCart cart = (MyCart) model.getAttribute("cart");
 			
 			if (cart == null) {
-				cart = new CartModel();
+				cart = new MyCart();
 				model.addAttribute("cart", cart);
 			}
 			
-			cart.addProduct(product);
+			ProductInfo productInfo = new ProductInfo(
+					product.getId(), product.getName(), product.getDescription(), product.getPrice(),
+					0, toListString(product.getProductImages()));
+			
+			cart.addProduct(productInfo, quantity.orElse(0));
 			
 			
 		}
@@ -57,7 +69,7 @@ public class CartController {
 	@PostMapping("/cart/delete/{productId}")
 	public String processDeleteProduct(@PathVariable int productId, Model model) {
 		
-		 CartModel cart = (CartModel) model.getAttribute("cart");
+		MyCart cart = (MyCart) model.getAttribute("cart");
 		
 		 if (cart != null) {
 			 cart.deleteProduct(productId);
@@ -69,10 +81,19 @@ public class CartController {
 	@PostMapping("/cart/clear")
 	public String processClearCart(Model model) {
 		
-		model.addAttribute("cart", new CartModel());
+		model.addAttribute("cart", new MyCart());
 		
 		
 		return "redirect:/cart";
+	}
+	
+	
+	
+	private List<String> toListString(List<ProductImage> pm) {
+		
+		return pm.stream()
+			.map(p -> p.getName())
+			.collect(Collectors.toList());
 	}
 	
 }

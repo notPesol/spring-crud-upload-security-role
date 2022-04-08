@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.pesol.spring.entity.Product;
 
-public class CartModel {
+public class Cart {
 
 	private List<Product> products = new ArrayList<Product>();
 
